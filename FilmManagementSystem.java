@@ -17,9 +17,10 @@ public class FilmManagementSystem {
     
     private FilmRatingHeap filmRatingHeap = new FilmRatingHeap();
     private FilmRevenueHeap filmRevenueHeap = new FilmRevenueHeap();
-    private Stack<Film> revenueStack = new Stack<Film>(); //TODO: Fix this 
+    private Stack<Film> revenueStack = new Stack<Film>(); 
     private Queue<Film> screenings = new Queue<>();
-    private HashMap filmMap = new HashMap(10);
+    private HashMap filmIDMap = new HashMap(10);
+    private HashMap actorIDMap = new HashMap(10);
 
     private boolean isRunning = true;
     
@@ -181,11 +182,12 @@ public class FilmManagementSystem {
             filmRevenueHeap.addFilm(film);
             filmBST.insert(film.getFilmName());
             screenings.enqueue(film);
-            filmMap.put(film.getUniqueFilmID(), film.getUniqueFilmID());
+            filmIDMap.put(film.getUniqueFilmID(), film.getUniqueFilmID());
         }
 
         for (Actor actor: allActorsList) {
             actorBST.insert(actor.getActorName());
+            actorIDMap.put(actor.getUniqueActorID(), actor.getUniqueActorID());
         }
 
         
@@ -211,6 +213,7 @@ public class FilmManagementSystem {
             film.addActor(actor);
             actor.addFilm(film);
             allActorsList.add(actor);
+
         }
 
         allFilmsList.add(film);
@@ -227,22 +230,18 @@ public class FilmManagementSystem {
         System.out.println("ALL FILMS: " + allFilmsList);
         System.out.println("Enter the id of the film you want to delete: ");
         int id = InputHelper.getIntegerInput("Film id: ");
-        if (!filmMap.containsKey(id)) {
-            System.out.println("INVALID FILM ID");
+        Film tempFilm = Film.getFilmByID(allFilmsList, filmIDMap, id);
+
+        if (tempFilm == null) {
+            System.out.println("Cant find the film#" + id );
             return;
+        } else {
+            allFilmsList.remove(tempFilm);
+            filmBST.delete(tempFilm.getFilmName());
+            filmRatingHeap.removeFilm(tempFilm);
+            filmRevenueHeap.removeFilm(tempFilm);
+            filmIDMap.remove(id);
         }
-        for (Film film : allFilmsList) {
-            if (film.getUniqueFilmID() == id) {
-                allFilmsList.remove(film);
-                filmBST.delete(film.getFilmName());
-                filmRatingHeap.removeFilm(film);
-                filmRevenueHeap.removeFilm(film);
-
-                return;
-            } 
-        }
-
-        System.out.println("Cant find the film#" + id );
     }
 
     private void updateFilm() {
@@ -253,35 +252,36 @@ public class FilmManagementSystem {
         while (true) {
             System.out.println(allFilmsList);
             int id = InputHelper.getIntegerInput("Enter the id of the film you want to update: ");
-            if (!filmMap.containsKey(id)) {
-                System.out.println("INVALID FILM ID");
+            
+            Film tempFilm = Film.getFilmByID(allFilmsList, filmIDMap, id);
+
+            if (tempFilm == null) {
+                System.out.println("Cant find the film#" + id );
                 break;
+            } else {
+                System.out.println(tempFilm);
+                System.out.println("Is this the film you want to update?(y/n)");
+                char choice = InputHelper.getCharInput("Y or N: ");
+                if (choice == 'Y' || choice == 'y' || choice == ' ') {
+                    LinkedList<Actor> actors = tempFilm.getActorList(); //get the actors of the film before updating
+                    allFilmsList.remove(tempFilm);
+
+                    Film updatedFilm = Film.addFilm(id);
+
+                    for (Actor actor : actors) {
+                        updatedFilm.addActor(actor);
+                    }
+
+                    //update the film in data structures
+                    allFilmsList.add(updatedFilm);
+                    filmBST.insert(updatedFilm.getFilmName());
+                    filmRatingHeap.addFilm(updatedFilm);
+                    filmRevenueHeap.addFilm(updatedFilm);
+                    
+                    return;
+                }            
             }
-            for (Film film : allFilmsList) {
-                if (film.getUniqueFilmID() == id ) {
-                    LinkedList<Actor> actors = film.getActorList(); //get the actors of the film before updating
-                    System.out.println(film);
-                    System.out.println("Is this the film you want to update?(y/n)");
-                    char choice = InputHelper.getCharInput("Y or N: ");
-                    if (choice == 'Y' || choice == 'y' || choice == ' ') {
-                        allFilmsList.remove(film);
-
-                        Film updatedFilm = Film.addFilm(id);
-
-                        for (Actor actor : actors) {
-                            updatedFilm.addActor(actor);
-                        }
-
-                        //update the film in data structures
-                        allFilmsList.add(updatedFilm);
-                        filmBST.insert(updatedFilm.getFilmName());
-                        filmRatingHeap.addFilm(updatedFilm);
-                        filmRevenueHeap.addFilm(updatedFilm);
-                        
-                        return;
-                    }            
-                }
-            }
+            
             clearScreen();
         }
         
@@ -294,22 +294,23 @@ public class FilmManagementSystem {
         }
         System.out.println(allFilmsList);
         int id = InputHelper.getIntegerInput("Enter the id of the film you want to rate: ");
-        for (Film film : allFilmsList) {
-            if (film.getUniqueFilmID() == id) {
-                System.out.println(film);
-                System.out.println("Enter the rating for the film (1-10)");
-                int rating = InputHelper.getIntegerInput("Enter the rating for the film: ");
-                if (rating < 1 || rating > 10) {
-                    System.out.println("Invalid rating");
-                } else {
-                    film.addRating(rating);
-                    filmRatingHeap.updateRanking(film);
-                    filmRevenueHeap.updateRanking(film);
-                }
-                return;
-            } 
+
+        Film tempFilm = Film.getFilmByID(allFilmsList, filmIDMap, id);
+
+        if (tempFilm == null) {
+            System.out.println("Cant find the film#" + id );
+            return;
+        } else {
+            System.out.println(tempFilm);
+            System.out.println("Enter the rating for the film (1-10)");
+            int rating = InputHelper.getIntegerInput("Enter the rating for the film: ");
+            if (rating < 1 || rating > 10) {
+                System.out.println("Invalid rating");
+            } else {
+                tempFilm.addRating(rating);
+                filmRatingHeap.updateRanking(tempFilm);
+            }
         }
-        System.out.println("Cant find the film#" + id );
     }
 
     private void addManualRevenue() {
@@ -319,19 +320,28 @@ public class FilmManagementSystem {
         }
         System.out.println(allFilmsList);
         int id = InputHelper.getIntegerInput("Enter the id of the film you want to add revenue: ");
-        if (!filmMap.containsKey(id)) {
-            System.out.println("INVALID FILM ID");
+
+        Film tempFilm = Film.getFilmByID(allFilmsList, filmIDMap, id);
+
+        if (tempFilm == null) {
+            System.out.println("Cant find the film#" + id );
             return;
+        } else {
+            System.out.println(tempFilm);
+            double ticketPrice = InputHelper.getDoubleInput("Enter the ticket price: ");
+            double numScreenings = InputHelper.getDoubleInput("Enter the number of screenings: ");
+
+            double revenue = (int)(ticketPrice * numScreenings);
+            
+            tempFilm.addRevenue(revenue);
+            revenueStack.push(tempFilm);
+            filmRevenueHeap.updateRanking(tempFilm);
+
+            System.out.println("Revenue added successfully");
+            System.out.println("\nHere is the updated revenue for the film: ");
+            System.out.println(tempFilm);
+
         }
-        for (Film film : allFilmsList) {
-            if (film.getUniqueFilmID() == id) {
-                System.out.println(film);
-                double revenue = InputHelper.getDoubleInput("Enter the revenue for the film: ");
-                film.addRevenue(revenue);
-                return;
-            } 
-        }
-        System.out.println("Cant find the film#" + id );
     }
 
     private void addActor() {
@@ -354,6 +364,8 @@ public class FilmManagementSystem {
 
         allActorsList.add(actor);
         actorBST.insert(actor.getActorName());
+        actorIDMap.put(actor.getUniqueActorID(), actor.getUniqueActorID());
+        
     }
 
     private void deleteActor() {
@@ -365,33 +377,37 @@ public class FilmManagementSystem {
         System.out.println("ALL ACTORS: " + allActorsList);
         System.out.println("Enter the id of the actor you want to delete");
         int id = InputHelper.getIntegerInput("Actor id: ");
-        for (Actor actor : allActorsList) {
-            if (actor.getUniqueActorID() == id) {
-                System.out.println("Deleting actor: " + actor);
-                allActorsList.remove(actor);
-                actorBST.delete(actor.getActorName());
 
-                return;
-            } 
+        Actor tempActor = Actor.getActorByID(allActorsList, actorIDMap, id);
+
+        if (tempActor == null) {
+            System.out.println("Cant find the actor#" + id );
+            return;
+        } else {
+            allActorsList.remove(tempActor);
+            actorBST.delete(tempActor.getActorName());
+            actorIDMap.remove(id);
         }
-        System.out.println("Cant find the actor#" + id );
     }
 
     private void searchFilmOrActor() {
         String search = InputHelper.getStringInput("Enter the name of the film or actor you want to search: ");
         //search in the BST
-        String film = filmBST.search(search);
-        String actor = actorBST.search(search);
-        if (film != null) {
-            System.out.println("Film found: ");
+        String filmName = filmBST.search(search);
+        String actorName = actorBST.search(search);
+
+        if (filmName != null) {
+            Film film = Film.getFilmByName(allFilmsList, filmName);
+            System.out.println("\nFilm found: ");
             System.out.println(film);
             return;
-        } else if (actor != null) {
-            System.out.println("Actor found: ");
+        } else if (actorName != null) {
+            Actor actor = Actor.getActorByName(allActorsList, actorName);
+            System.out.println("\nActor found: ");
             System.out.println(actor);
             return;
         } else {
-            System.out.println("Cant find the film or actor with the name: " + search);
+            System.out.println("\nCant find the film or actor with the name: " + search);
         }
 
     }

@@ -1,4 +1,5 @@
 import data_structures.LinkedList;
+import data_structures.HashMap;
 
 import utils.InputHelper;
 
@@ -94,6 +95,26 @@ public class Film {
         film.uniqueFilmID = id;
 
         return film;
+    }
+
+    public static Film getFilmByID(LinkedList<Film> allFilms, HashMap filMap, int id) {
+        if (filMap.containsKey(id)) {
+            for (Film film : allFilms) {
+                if (film.getUniqueFilmID() == id) {
+                    return film;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Film getFilmByName(LinkedList<Film> allFilms, String name) {
+        for (Film film : allFilms) {
+            if (film.getFilmName().equalsIgnoreCase(name)) {
+                return film;
+            }
+        }
+        return null;
     }
 
     @Override
