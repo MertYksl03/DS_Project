@@ -220,6 +220,7 @@ public class FilmManagementSystem {
         filmBST.insert(film.getFilmName());
         filmRatingHeap.addFilm(film);
         filmRevenueHeap.addFilm(film);
+        filmIDMap.put(film.getUniqueFilmID(), film.getUniqueFilmID());
     }
 
     private void deleteFilm() {
@@ -365,7 +366,6 @@ public class FilmManagementSystem {
         allActorsList.add(actor);
         actorBST.insert(actor.getActorName());
         actorIDMap.put(actor.getUniqueActorID(), actor.getUniqueActorID());
-        
     }
 
     private void deleteActor() {

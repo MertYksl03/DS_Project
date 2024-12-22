@@ -1,3 +1,4 @@
+// Purpose: This class is used to store films in a heap based on their average rating. 
 
 import java.util.PriorityQueue;
 

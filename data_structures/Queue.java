@@ -21,7 +21,7 @@ public class Queue<T> {
         size = 0;
     }
 
-    // Add an element to the rear of the queue
+    // Add an element to queue
     public void enqueue(T data) {
         Node<T> newNode = new Node<>(data);
         if (rear == null) {
@@ -56,12 +56,10 @@ public class Queue<T> {
         return front.data;
     }
 
-    // Check if the queue is empty
     public boolean isEmpty() {
         return front == null;
     }
 
-    // Get the size of the queue
     public int size() {
         return size;
     }

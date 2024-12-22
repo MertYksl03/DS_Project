@@ -69,6 +69,7 @@ public class LinkedList<T> implements Iterable<T> {
         return false;
     }
 
+    // Clear the list
     public void clear() {
         head = null;
         length = 0;
@@ -84,7 +85,7 @@ public class LinkedList<T> implements Iterable<T> {
 
     public T get(int index) {
         if (index < 0 || index >= length) {
-            throw new IndexOutOfBoundsException("Index out of bounds");
+            System.out.println("Index out of bounds");
         }
 
         Node temp = head;
@@ -127,7 +128,7 @@ public class LinkedList<T> implements Iterable<T> {
         @Override
         public T next() {
             if (current == null) {
-                throw new java.util.NoSuchElementException();
+                System.out.println("No such element");
             }
             T data = current.data;
             current = current.next;

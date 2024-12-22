@@ -13,7 +13,7 @@ public class BST {
     private Node root;
 
     public void insert(String name) {
-        root = insertRec(root, name.toUpperCase()); //bst is case insensitive. so we convert the film name to UPPERCASE
+        root = insertRec(root, name.toUpperCase()); //bst is case sensitive. so we convert the film name to UPPERCASE
     }
 
     private Node insertRec(Node root, String name) {
