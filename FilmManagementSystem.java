@@ -244,6 +244,12 @@ public class FilmManagementSystem {
             System.out.println("Cant find the film#" + id );
             return;
         } else {
+            //remove the film from the actors
+            LinkedList<Actor> actors = tempFilm.getActorList();
+            for (Actor actor : actors) {
+                actor.getFilmsParticipated().remove(tempFilm);
+            }
+            //remove the film from the system
             allFilmsList.remove(tempFilm);
             filmBST.delete(tempFilm.getFilmName());
             filmRatingHeap.removeFilm(tempFilm);
@@ -365,19 +371,17 @@ public class FilmManagementSystem {
         int numFilms = InputHelper.getIntegerInput("Enter number of films: ");
         for (int i = 0; i < numFilms; i++) {
             Film film = Film.addFilm();
-            if (allFilmsList.contains(film) || filmBST.search(film.getFilmName()) != null) {
-                film.addActor(actor);
-                actor.addFilm(film);
-                System.out.println("Film already exists in the system");
-                continue;
-            }
             film.addActor(actor);
             actor.addFilm(film);
-            allFilmsList.add(film);
-            filmBST.insert(film.getFilmName());
-            filmRatingHeap.addFilm(film);
-            filmRevenueHeap.addFilm(film);
-            filmIDMap.put(film.getUniqueFilmID(), film.getUniqueFilmID());
+            if (allFilmsList.contains(film) || filmBST.search(film.getFilmName()) != null) {
+                System.out.println("Film already exists in the system");
+            } else {
+                allFilmsList.add(film);
+                filmBST.insert(film.getFilmName());
+                filmRatingHeap.addFilm(film);
+                filmRevenueHeap.addFilm(film);
+                filmIDMap.put(film.getUniqueFilmID(), film.getUniqueFilmID());
+            }
         }
 
         allActorsList.add(actor);
@@ -401,6 +405,12 @@ public class FilmManagementSystem {
             System.out.println("Cant find the actor#" + id );
             return;
         } else {
+            // remove the actor from the films
+            LinkedList<Film> films = tempActor.getFilmsParticipated();
+            for (Film film : films) {
+                film.getActorList().remove(tempActor);
+            }
+            // remove the actor from the system
             allActorsList.remove(tempActor);
             actorBST.delete(tempActor.getActorName());
             actorIDMap.remove(id);
