@@ -51,7 +51,6 @@ public class LinkedList<T> implements Iterable<T> {
         }
 
         if (temp == null) {
-            System.out.println("Given Value is not present in linked list");
             return;
         }
 

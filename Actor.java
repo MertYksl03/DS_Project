@@ -1,3 +1,4 @@
+import data_structures.HashMap;
 import data_structures.LinkedList;
 
 import utils.InputHelper;
@@ -48,6 +49,26 @@ public class Actor {
         Actor actor = new Actor(actorName, actorID);
         
         return actor;
+    }
+
+    public static Actor getActorByID(LinkedList<Actor> allActors, HashMap actorMap, int id) {
+        if (actorMap.containsKey(id)) {
+            for (Actor actor : allActors) {
+                if (actor.getUniqueActorID() == id) {
+                    return actor;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Actor getActorByName(LinkedList<Actor> allActors, String name) {
+        for (Actor actor : allActors) {
+            if (actor.getActorName().equalsIgnoreCase(name)) {
+                return actor;
+            }
+        }
+        return null;
     }
 
     @Override
