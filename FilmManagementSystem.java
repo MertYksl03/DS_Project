@@ -213,7 +213,8 @@ public class FilmManagementSystem {
             film.addActor(actor);
             actor.addFilm(film);
             allActorsList.add(actor);
-
+            actorBST.insert(actor.getActorName());
+            actorIDMap.put(actor.getUniqueActorID(), actor.getUniqueActorID());
         }
 
         allFilmsList.add(film);
@@ -221,6 +222,8 @@ public class FilmManagementSystem {
         filmRatingHeap.addFilm(film);
         filmRevenueHeap.addFilm(film);
         filmIDMap.put(film.getUniqueFilmID(), film.getUniqueFilmID());
+
+
     }
 
     private void deleteFilm() {
@@ -361,6 +364,10 @@ public class FilmManagementSystem {
             film.addActor(actor);
             actor.addFilm(film);
             allFilmsList.add(film);
+            filmBST.insert(film.getFilmName());
+            filmRatingHeap.addFilm(film);
+            filmRevenueHeap.addFilm(film);
+            filmIDMap.put(film.getUniqueFilmID(), film.getUniqueFilmID());
         }
 
         allActorsList.add(actor);
