@@ -227,6 +227,10 @@ public class FilmManagementSystem {
         System.out.println("ALL FILMS: " + allFilmsList);
         System.out.println("Enter the id of the film you want to delete: ");
         int id = InputHelper.getIntegerInput("Film id: ");
+        if (!filmMap.containsKey(id)) {
+            System.out.println("INVALID FILM ID");
+            return;
+        }
         for (Film film : allFilmsList) {
             if (film.getUniqueFilmID() == id) {
                 allFilmsList.remove(film);
@@ -249,6 +253,10 @@ public class FilmManagementSystem {
         while (true) {
             System.out.println(allFilmsList);
             int id = InputHelper.getIntegerInput("Enter the id of the film you want to update: ");
+            if (!filmMap.containsKey(id)) {
+                System.out.println("INVALID FILM ID");
+                break;
+            }
             for (Film film : allFilmsList) {
                 if (film.getUniqueFilmID() == id ) {
                     LinkedList<Actor> actors = film.getActorList(); //get the actors of the film before updating
@@ -275,7 +283,6 @@ public class FilmManagementSystem {
                 }
             }
             clearScreen();
-            System.out.println("\n" + "CANT FIND THE film #" + id);
         }
         
     }
@@ -312,6 +319,10 @@ public class FilmManagementSystem {
         }
         System.out.println(allFilmsList);
         int id = InputHelper.getIntegerInput("Enter the id of the film you want to add revenue: ");
+        if (!filmMap.containsKey(id)) {
+            System.out.println("INVALID FILM ID");
+            return;
+        }
         for (Film film : allFilmsList) {
             if (film.getUniqueFilmID() == id) {
                 System.out.println(film);
