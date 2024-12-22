@@ -212,6 +212,9 @@ public class FilmManagementSystem {
             Actor actor = Actor.addActor();
             if (allActorsList.contains(actor) || actorBST.search(actor.getActorName()) != null) {
                 System.out.println("Actor already exists in the system");
+                actor = Actor.getActorByName(allActorsList, actor.getActorName());
+                film.addActor(actor);
+                actor.addFilm(film);
                 continue;
             } 
             film.addActor(actor);
@@ -371,17 +374,20 @@ public class FilmManagementSystem {
         int numFilms = InputHelper.getIntegerInput("Enter number of films: ");
         for (int i = 0; i < numFilms; i++) {
             Film film = Film.addFilm();
-            film.addActor(actor);
-            actor.addFilm(film);
             if (allFilmsList.contains(film) || filmBST.search(film.getFilmName()) != null) {
                 System.out.println("Film already exists in the system");
-            } else {
-                allFilmsList.add(film);
-                filmBST.insert(film.getFilmName());
-                filmRatingHeap.addFilm(film);
-                filmRevenueHeap.addFilm(film);
-                filmIDMap.put(film.getUniqueFilmID(), film.getUniqueFilmID());
-            }
+                film = Film.getFilmByName(allFilmsList, film.getFilmName());
+                film.addActor(actor);
+                actor.addFilm(film);
+                continue;
+            } 
+            allFilmsList.add(film);
+            filmBST.insert(film.getFilmName());
+            filmRatingHeap.addFilm(film);
+            filmRevenueHeap.addFilm(film);
+            filmIDMap.put(film.getUniqueFilmID(), film.getUniqueFilmID());
+            film.addActor(actor);
+            actor.addFilm(film);
         }
 
         allActorsList.add(actor);
