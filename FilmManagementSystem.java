@@ -366,6 +366,8 @@ public class FilmManagementSystem {
         for (int i = 0; i < numFilms; i++) {
             Film film = Film.addFilm();
             if (allFilmsList.contains(film) || filmBST.search(film.getFilmName()) != null) {
+                film.addActor(actor);
+                actor.addFilm(film);
                 System.out.println("Film already exists in the system");
                 continue;
             }
