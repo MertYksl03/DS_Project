@@ -175,7 +175,7 @@ public class FilmManagementSystem {
         Initialize init = new Initialize();
         allFilmsList = init.getFilms();
         allActorsList = init.getActors();
-        
+
         //initialize the film ranking heap
         for (Film film : allFilmsList) {
             filmRatingHeap.addFilm(film);
@@ -210,6 +210,10 @@ public class FilmManagementSystem {
         int numActors = InputHelper.getIntegerInput("Enter number of actors: ");
         for (int i = 0; i < numActors; i++) {
             Actor actor = Actor.addActor();
+            if (allActorsList.contains(actor) || actorBST.search(actor.getActorName()) != null) {
+                System.out.println("Actor already exists in the system");
+                continue;
+            } 
             film.addActor(actor);
             actor.addFilm(film);
             allActorsList.add(actor);
@@ -361,6 +365,10 @@ public class FilmManagementSystem {
         int numFilms = InputHelper.getIntegerInput("Enter number of films: ");
         for (int i = 0; i < numFilms; i++) {
             Film film = Film.addFilm();
+            if (allFilmsList.contains(film) || filmBST.search(film.getFilmName()) != null) {
+                System.out.println("Film already exists in the system");
+                continue;
+            }
             film.addActor(actor);
             actor.addFilm(film);
             allFilmsList.add(film);
