@@ -18,7 +18,7 @@ public class FilmManagementSystem {
     private FilmRatingHeap filmRatingHeap = new FilmRatingHeap();
     private FilmRevenueHeap filmRevenueHeap = new FilmRevenueHeap();
     private Stack<Film> revenueStack = new Stack<Film>(); 
-    private Queue<Film> screenings = new Queue<>();
+    private Queue<Film> screeningSchedule = new Queue<>();
     private HashMap filmIDMap = new HashMap(10);
     private HashMap actorIDMap = new HashMap(10);
 
@@ -70,7 +70,7 @@ public class FilmManagementSystem {
                     displayFilmsByRanking();
                     break;
                 case 13:
-                    System.out.println(screenings);
+                    System.out.println(screeningSchedule);
                     break;
                 case 14:
                     screenFilm();
@@ -110,7 +110,7 @@ public class FilmManagementSystem {
         System.out.println("10. Search Film or Actor");
         System.out.println("11. Display all films by revenue");
         System.out.println("12. Display all films by ranking");
-        System.out.println("13. Display all screenings");
+        System.out.println("13. Display the screening schedule");
         System.out.println("14. Screen a film");
         System.out.println("15. List the last revenue calculations");
         System.out.println("16. Exit");
@@ -127,12 +127,12 @@ public class FilmManagementSystem {
     }
 
     private void screenFilm() {
-        if (screenings.isEmpty()) {
+        if (screeningSchedule.isEmpty()) {
             System.out.println("No films to screen");
             return;
         }
         System.out.println();
-        Film film = screenings.dequeue();
+        Film film = screeningSchedule.dequeue();
         System.out.println("Screening film: " + film.getFilmName());
         sleep(1);
         simulateRevenue(film);
@@ -144,7 +144,7 @@ public class FilmManagementSystem {
         int numScreenings = (int)(Math.random() * 100000);
         int totalRevenue = (int)(ticketPrice * numScreenings);
 
-        System.out.println(film.getFilmName() + " has " + numScreenings + " screenings");
+        System.out.println(film.getFilmName() + " has " + numScreenings + " screeningSchedule");
         sleep(0.05);
         System.out.println("Ticket price: " + ticketPrice);
         sleep(0.05);
@@ -172,16 +172,15 @@ public class FilmManagementSystem {
         clearScreen();
 
         InputHelper.Initialize();
-        Initialize init = new Initialize();
+        Initializer init = new Initializer();
         allFilmsList = init.getFilms();
         allActorsList = init.getActors();
 
-        //initialize the film ranking heap
+        // Add the films and actors to the data structures
         for (Film film : allFilmsList) {
             filmRatingHeap.addFilm(film);
             filmRevenueHeap.addFilm(film);
             filmBST.insert(film.getFilmName());
-            screenings.enqueue(film);
             filmIDMap.put(film.getUniqueFilmID(), film.getUniqueFilmID());
         }
 
@@ -190,7 +189,19 @@ public class FilmManagementSystem {
             actorIDMap.put(actor.getUniqueActorID(), actor.getUniqueActorID());
         }
 
-        
+        // Add films to the screeningSchedule queue randomly to simulate the screenings
+        boolean[] visited = new boolean[allFilmsList.length()];
+        for (int i = 0; i < allFilmsList.length(); i++) {
+            while (true) {
+                int randomIndex = (int)(Math.random() * allFilmsList.length());
+                if (!visited[randomIndex]) {
+                    screeningSchedule.enqueue(allFilmsList.get(randomIndex));
+                    visited[randomIndex] = true;
+                    break;
+                }
+            }
+        }
+
     }
 
     private void close() {
@@ -346,7 +357,7 @@ public class FilmManagementSystem {
         } else {
             System.out.println(tempFilm);
             double ticketPrice = InputHelper.getDoubleInput("Enter the ticket price: ");
-            double numScreenings = InputHelper.getDoubleInput("Enter the number of screenings: ");
+            double numScreenings = InputHelper.getDoubleInput("Enter the number of screeningSchedule: ");
 
             double revenue = (int)(ticketPrice * numScreenings);
             

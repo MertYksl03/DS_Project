@@ -2,12 +2,12 @@
 
 import data_structures.*;
 
-public class Initialize {
+public class Initializer {
     private LinkedList<Film> films;
     private LinkedList<Actor> actors;
 
 
-    public Initialize() {
+    public Initializer() {
         this.films = new LinkedList<>();
         this.actors = new LinkedList<>();
 
