@@ -15,21 +15,21 @@ public class FilmRatingHeap {
     }
 
     public void addFilm(Film film) {
-        if (ratingHeap.isFull()) {
-            int oldSize = maxSize;
-            maxSize = maxSize * 2;
-            MaxHeap newHeap = new MaxHeap(maxSize);
-            for (int i = 0; i < oldSize; i++) {
-                if (ratingHeap.isEmpty()) {
-                    break;
-                }
-                newHeap.insert(ratingHeap.extractMax());
-            }
-            ratingHeap = newHeap;
-            newHeap = null;
-        } else {
-            ratingHeap.insert(film.getFilmName(), film.getAverageRating(), film.getReleaseYear());
+        if (ratingHeap.isFull()) { // if the heap is full, double the size
+            doubleSize();
         }
+        ratingHeap.insert(film.getFilmName(), film.getAverageRating(), film.getReleaseYear());
+    }
+
+    private void doubleSize() {
+        int oldSize = maxSize;
+        maxSize = maxSize * 2;
+        MaxHeap newHeap = new MaxHeap(maxSize);
+        for (int i = 0; i < oldSize; i++) {
+            newHeap.insert(ratingHeap.extractMax());
+        }
+        ratingHeap = newHeap;
+        newHeap = null;
     }
 
     public void removeFilm(Film film) {

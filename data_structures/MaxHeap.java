@@ -118,27 +118,29 @@ public class MaxHeap {
         int right = this.rightChild(i);
         int largest = i;
     
-        if (left <= currentSize) {
-            if (heap[left].data1 > heap[largest].data1 || 
-               (heap[left].data1 == heap[largest].data1 && heap[left].data2 > heap[largest].data2)) {
-                largest = left;
-            }
+        // Check if left child is within bounds and compare
+        if (left < currentSize && 
+           (heap[left].data1 > heap[largest].data1 || 
+           (heap[left].data1 == heap[largest].data1 && heap[left].data2 > heap[largest].data2))) {
+            largest = left;
         }
     
-        if (right <= currentSize) {
-            if (heap[right].data1 > heap[largest].data1 || 
-               (heap[right].data1 == heap[largest].data1 && heap[right].data2 > heap[largest].data2)) {
-                largest = right;
-            }
+        // Check if right child is within bounds and compare
+        if (right < currentSize && 
+           (heap[right].data1 > heap[largest].data1 || 
+           (heap[right].data1 == heap[largest].data1 && heap[right].data2 > heap[largest].data2))) {
+            largest = right;
         }
     
+        // If the largest is not the current node, swap and continue
         if (largest != i) {
             Node temp = heap[i];
             heap[i] = heap[largest];
             heap[largest] = temp;
-            maxHeapify(largest);
+            maxHeapify(largest); // Recursively fix the affected subtree
         }
     }
+    
     
 
     // Returns the maximum item of the heap

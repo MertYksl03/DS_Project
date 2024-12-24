@@ -117,12 +117,12 @@ public class FilmManagementSystem {
     }
 
     private void sleep(double seconds) {
-       int milliseconds = (int)(seconds * 1000);
-        try {
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            System.out.println("Sleep interrupted: " + e.getMessage());
-       }
+    //    int milliseconds = (int)(seconds * 1000);
+    //     try {
+    //         Thread.sleep(milliseconds);
+    //     } catch (InterruptedException e) {
+    //         System.out.println("Sleep interrupted: " + e.getMessage());
+    //    }
     }
 
     private void screenFilm() {

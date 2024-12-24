@@ -36,9 +36,9 @@ public class Initializer {
         films.add(new Film("The Lord of the Rings: The Return of the King", "Adventure", 2003));
         films.add(new Film("Pulp Fiction", "Crime", 1994));
         films.add(new Film("The Lord of the Rings: The Fellowship of the Ring", "Adventure", 2001));
-        films.add(new Film("Forrest Gump", "Drama", 1994));
         films.add(new Film("Fight Club", "Drama", 1999));
         films.add(new Film("Inception", "Action", 2010));
+        films.add(new Film("Forrest Gump", "Drama", 1994));
         films.add(new Film("The Lord of the Rings: The Two Towers", "Adventure", 2002));
         films.add(new Film("Star Wars: Episode V - The Empire Strikes Back", "Action", 1980));
         films.add(new Film("The Matrix", "Action", 1999));

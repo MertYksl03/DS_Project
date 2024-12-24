@@ -15,21 +15,21 @@ public class FilmRevenueHeap {
     }
 
     public void addFilm(Film film) {
-        if (revenueHeap.isFull()) {
-            int oldSize = maxSize;
-            maxSize = maxSize * 2;
-            MaxHeap newHeap = new MaxHeap(maxSize);
-            for (int i = 0; i < oldSize; i++) {
-                if (revenueHeap.isEmpty()) {
-                    break;
-                }
-                newHeap.insert(revenueHeap.extractMax());
-            }
-            revenueHeap = newHeap;
-            newHeap = null;
-        } else {
-            revenueHeap.insert(film.getFilmName(), film.getTotalRevenue(), film.getReleaseYear());
+        if (revenueHeap.isFull()) { // If the heap is full, double the size
+            doubleSize();
+        } 
+        revenueHeap.insert(film.getFilmName(), film.getTotalRevenue(), film.getReleaseYear());
+    }
+
+    private void doubleSize() {
+        int oldSize = maxSize;
+        maxSize = maxSize * 2;
+        MaxHeap newHeap = new MaxHeap(maxSize);
+        for (int i = 0; i < oldSize; i++) {
+            newHeap.insert(revenueHeap.extractMax());
         }
+        revenueHeap = newHeap;
+        newHeap = null;
     }
 
     public void removeFilm(Film film) {
