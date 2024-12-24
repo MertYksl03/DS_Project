@@ -14,17 +14,10 @@ public class FilmManagementSystem {
     private LinkedList<Actor> allActorsList = new LinkedList<Actor>(); //this holds all the actors in the system
     private BST filmBST = new BST();
     private BST actorBST = new BST();
-    
-    // private FilmRatingHeap filmRatingHeap = new FilmRatingHeap();
-    // private FilmRevenueHeap filmRevenueHeap = new FilmRevenueHeap();
     private Stack<Film> revenueStack = new Stack<Film>(); 
     private Queue<Film> screeningSchedule = new Queue<>();
     private HashMap filmIDMap = new HashMap(10);
     private HashMap actorIDMap = new HashMap(10);
-
-    // private MaxHeap filmRatingHeap = new MaxHeap(allFilmsList.length());
-    // private MaxHeap filmRevenueHeap = new MaxHeap(allFilmsList.length());
-
     private FilmRatingHeap filmRatingHeap = new FilmRatingHeap();
     private FilmRevenueHeap filmRevenueHeap = new FilmRevenueHeap();
 
@@ -124,12 +117,12 @@ public class FilmManagementSystem {
     }
 
     private void sleep(double seconds) {
-    //    int milliseconds = (int)(seconds * 1000);
-    //     try {
-    //         Thread.sleep(milliseconds);
-    //     } catch (InterruptedException e) {
-    //         System.out.println("Sleep interrupted: " + e.getMessage());
-    //    }
+       int milliseconds = (int)(seconds * 1000);
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException e) {
+            System.out.println("Sleep interrupted: " + e.getMessage());
+       }
     }
 
     private void screenFilm() {
