@@ -24,7 +24,7 @@ public class Initializer {
     public LinkedList<Actor> getActors() {
         return actors;
     }
-
+    
 
     private void initializeFilms() {
         films.add(new Film("The Shawshank Redemption", "Drama", 1994));
@@ -52,7 +52,8 @@ public class Initializer {
 
         // Add random ratings to films
         for (Film film : films) {
-            film.addRating((int)(Math.random() * 10));;
+            film.addRating((int)(Math.random() * 10));
+            film.addRating((int)(Math.random() * 10));
         }
 
         // Add random revenue to films

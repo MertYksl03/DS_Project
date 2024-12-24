@@ -1,38 +1,59 @@
-// Purpose: This class is used to store films in a heap based on their average rating. 
-
-import java.util.PriorityQueue;
+import data_structures.MaxHeap; 
 
 public class FilmRatingHeap {
-    private PriorityQueue<Film> rankingHeap;
+    private MaxHeap ratingHeap;
+    private int maxSize;
 
     public FilmRatingHeap() {
-        rankingHeap = new PriorityQueue<>((f1, f2) -> {
-            if (Double.compare(f2.getAverageRating(), f1.getAverageRating()) == 0) {
-                return Integer.compare(f1.getReleaseYear(), f2.getReleaseYear());
-            }
-            return Double.compare(f2.getAverageRating(), f1.getAverageRating());
-        });
+        this.maxSize = 10;
+        this.ratingHeap = new MaxHeap(maxSize);
     }
 
-    public void updateRanking(Film film) {
-        rankingHeap.remove(film);
-        rankingHeap.add(film);
+    public FilmRatingHeap(int maxSize) {
+        this.maxSize = maxSize;
+        this.ratingHeap = new MaxHeap(maxSize);
     }
 
     public void addFilm(Film film) {
-        rankingHeap.add(film);
-    }
-
-    public Film getTopFilm() {
-        return rankingHeap.peek();
+        if (ratingHeap.isFull()) {
+            int oldSize = maxSize;
+            maxSize = maxSize * 2;
+            MaxHeap newHeap = new MaxHeap(maxSize);
+            for (int i = 0; i < oldSize; i++) {
+                if (ratingHeap.isEmpty()) {
+                    break;
+                }
+                newHeap.insert(ratingHeap.extractMax());
+            }
+            ratingHeap = newHeap;
+            newHeap = null;
+        } else {
+            ratingHeap.insert(film.getFilmName(), film.getAverageRating(), film.getReleaseYear());
+        }
     }
 
     public void removeFilm(Film film) {
-        rankingHeap.remove(film);
+        ratingHeap.delete(film.getFilmName());
+    }
+
+    public void updateFilmRating(Film oldFilm, Film updatedFilm) {
+        ratingHeap.delete(oldFilm.getFilmName());
+        ratingHeap.insert(updatedFilm.getFilmName(), updatedFilm.getAverageRating(), updatedFilm.getReleaseYear());
+    }
+
+    public void updateFilmRating(Film film) {
+        ratingHeap.delete(film.getFilmName());
+        ratingHeap.insert(film.getFilmName(), film.getAverageRating(), film.getReleaseYear());
+    }
+
+    public void printTopFilms(int n) {
+        for (int i = 0; i < n; i++) {
+            System.out.println(ratingHeap.getMax());
+        }
     }
 
     @Override
     public String toString() {
-        return rankingHeap.toString();
+        return ratingHeap.toString();
     }
 }

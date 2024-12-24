@@ -12,7 +12,6 @@ public class Film {
     private LinkedList<Actor> actorList;
     private LinkedList<Integer> ratings; //this holds all the ratings for a film
     private double averageRating; // Dont forget to update this when a new rating is added
-    //TODO: Implement ratings
 
     private static int lastID = 0;
     
@@ -48,6 +47,7 @@ public class Film {
     public double getTotalRevenue() { return totalRevenue; }
     public void addRevenue(double revenue) { this.totalRevenue += revenue; }
     public double getAverageRating() { return averageRating; }
+    public void setAverageRating(double averageRating) { this.averageRating = averageRating; }
     
     //adds an actor to a film
     public void addActor(Actor actor) {

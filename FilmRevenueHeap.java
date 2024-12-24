@@ -1,38 +1,54 @@
-// Purpose: This class is used to store the top films based on their total revenue and release year.
-
-import java.util.PriorityQueue;
+import data_structures.MaxHeap; 
 
 public class FilmRevenueHeap {
-    private PriorityQueue<Film> rankingHeap;
+    private MaxHeap revenueHeap;
+    private int maxSize;
 
     public FilmRevenueHeap() {
-        rankingHeap = new PriorityQueue<>((f1, f2) -> {
-            if (Double.compare(f2.getTotalRevenue(), f1.getTotalRevenue()) == 0) {
-                return Integer.compare(f1.getReleaseYear(), f2.getReleaseYear());
-            }
-            return Double.compare(f2.getTotalRevenue(), f1.getTotalRevenue());
-        });
+        this.maxSize = 10;
+        this.revenueHeap = new MaxHeap(maxSize);
     }
 
-    public void updateRanking(Film film) {
-        rankingHeap.remove(film);
-        rankingHeap.add(film);
+    public FilmRevenueHeap(int maxSize) {
+        this.maxSize = maxSize;
+        this.revenueHeap = new MaxHeap(maxSize);
     }
 
     public void addFilm(Film film) {
-        rankingHeap.add(film);
-    }
-
-    public Film getTopFilm() {
-        return rankingHeap.peek();
+        if (revenueHeap.isFull()) {
+            int oldSize = maxSize;
+            maxSize = maxSize * 2;
+            MaxHeap newHeap = new MaxHeap(maxSize);
+            for (int i = 0; i < oldSize; i++) {
+                if (revenueHeap.isEmpty()) {
+                    break;
+                }
+                newHeap.insert(revenueHeap.extractMax());
+            }
+            revenueHeap = newHeap;
+            newHeap = null;
+        } else {
+            revenueHeap.insert(film.getFilmName(), film.getTotalRevenue(), film.getReleaseYear());
+        }
     }
 
     public void removeFilm(Film film) {
-        rankingHeap.remove(film);
+        revenueHeap.delete(film.getFilmName());
+    }
+
+    public void updateFilmRating(Film film) {
+        revenueHeap.delete(film.getFilmName());
+        revenueHeap.insert(film.getFilmName(), film.getTotalRevenue(), film.getReleaseYear());
+    }
+
+    public void printTopFilms(int n) {
+        for (int i = 0; i < n; i++) {
+            System.out.println(revenueHeap.getMax());
+        }
     }
 
     @Override
     public String toString() {
-        return rankingHeap.toString();
+        return revenueHeap.toString();
     }
 }
