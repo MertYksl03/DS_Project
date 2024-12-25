@@ -1,3 +1,4 @@
+package source;
 //Purpose: Initialize the data structures with some random data
 
 import data_structures.*;

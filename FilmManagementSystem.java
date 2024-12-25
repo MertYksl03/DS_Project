@@ -1,23 +1,38 @@
-import java.io.IOException;
+// Purpose: This is the main class of the Film Management System. It contains the main loop of the program and the main menu.
 
-//import data_structures.*;
-import data_structures.BST;
-import data_structures.LinkedList;
-import data_structures.Queue;
-import data_structures.Stack;
-import data_structures.HashMap;
+// import data_structures.BST;
+// import data_structures.LinkedList;
+// import data_structures.Queue;
+// import data_structures.Stack;
+// import data_structures.HashMap;
+import data_structures.*;
 
+// import source.Actor;
+// import source.Film;
+// import source.FilmRatingHeap;
+// import source.FilmRevenueHeap;
+// import source.Initializer;
+import source.*;
+
+// import utils.InputHelper;
+// import utils.Utils;
+// import utils.MainMenu;
 import utils.*;
 
 public class FilmManagementSystem {
     private LinkedList<Film> allFilmsList = new LinkedList<Film>(); //this holds all the films in the system
     private LinkedList<Actor> allActorsList = new LinkedList<Actor>(); //this holds all the actors in the system
+
     private BST filmBST = new BST();
     private BST actorBST = new BST();
+
     private Stack<Film> revenueStack = new Stack<Film>(); 
+    
     private Queue<Film> screeningSchedule = new Queue<>();
+    
     private HashMap filmIDMap = new HashMap(10);
     private HashMap actorIDMap = new HashMap(10);
+    
     private FilmRatingHeap filmRatingHeap = new FilmRatingHeap();
     private FilmRevenueHeap filmRevenueHeap = new FilmRevenueHeap();
 
@@ -29,7 +44,7 @@ public class FilmManagementSystem {
         
         //Main loop
         while (isRunning) {
-            printMenu();
+            MainMenu.print();
             int choice = InputHelper.getIntegerInput("Enter your choice: ");
             switch (choice) {
                 case 1:
@@ -80,49 +95,17 @@ public class FilmManagementSystem {
                 case 16:
                     isRunning = false;
                     System.out.println("Exiting...");
-                    sleep(0.5);
+                    Utils.sleep(0.5);
                     break;    
                 default:
                     System.out.println("Invalid choice");
                     break;
                 }
-            sleep(0.5); // this one second sleep creates a fake program doing something effect
+            Utils.sleep(0.5); // this one second Utils.sleep creates a fake program doing something effect
         }
 
         // To dont forget to close the scanner object, we have to call the close method
-        close();
-    }
-
-    private void printMenu() {
-        System.out.println("*************************************");
-        System.out.println("--------------MAIN MENU--------------");
-        System.out.println("*************************************");
-        System.out.println("1. Display all films");
-        System.out.println("2. Add Film");
-        System.out.println("3. Delete Film");
-        System.out.println("4. Update Film");
-        System.out.println("5. Rate a Film");
-        System.out.println("6. Manually add the revenue for a film");
-        System.out.println("7. Display all actors");
-        System.out.println("8. Add Actor");
-        System.out.println("9. Delete Actor");
-        System.out.println("10. Search Film or Actor");
-        System.out.println("11. Display all films by revenue");
-        System.out.println("12. Display all films by ranking");
-        System.out.println("13. Display the screening schedule");
-        System.out.println("14. Screen a film");
-        System.out.println("15. List the last revenue calculations");
-        System.out.println("16. Exit");
-        System.out.println("*************************************");
-    }
-
-    private void sleep(double seconds) {
-    //    int milliseconds = (int)(seconds * 1000);
-    //     try {
-    //         Thread.sleep(milliseconds);
-    //     } catch (InterruptedException e) {
-    //         System.out.println("Sleep interrupted: " + e.getMessage());
-    //    }
+        InputHelper.close();
     }
 
     private void screenFilm() {
@@ -133,7 +116,7 @@ public class FilmManagementSystem {
         System.out.println();
         Film film = screeningSchedule.dequeue();
         System.out.println("Screening film: " + film.getFilmName());
-        sleep(1);
+        Utils.sleep(1);
         simulateRevenue(film);
 
     }
@@ -143,19 +126,19 @@ public class FilmManagementSystem {
         int numScreenings = (int)(Math.random() * 100000);
         int totalRevenue = (int)(ticketPrice * numScreenings);
 
-        System.out.println(film.getFilmName() + " has " + numScreenings + " screeningSchedule");
-        sleep(0.05);
+        System.out.println(film.getFilmName() + " has " + numScreenings + " screenings");
+        Utils.sleep(0.05);
         System.out.println("Ticket price: " + ticketPrice);
-        sleep(0.05);
+        Utils.sleep(0.05);
         System.out.println("Total revenue: " + totalRevenue);
         System.out.println();
         film.addRevenue(totalRevenue);
         revenueStack.push(film);
-        sleep(0.05);
+        Utils.sleep(0.05);
     }
 
     private void Initialize() {
-        clearScreen();
+        Utils.clearScreen();
         System.out.println("*************************************");
         System.out.println("Welcome to the Film Management System");
         System.out.println("*************************************");
@@ -165,10 +148,10 @@ public class FilmManagementSystem {
         System.out.println("Please wait...");
         for (int i = 0; i < 35; i++) {
             System.out.print("#");
-            sleep(0.1);
+            Utils.sleep(0.1);
         }
 
-        clearScreen();
+        Utils.clearScreen();
 
         InputHelper.Initialize();
         Initializer init = new Initializer();
@@ -202,10 +185,6 @@ public class FilmManagementSystem {
             }
         }
 
-    }
-
-    private void close() {
-        InputHelper.close();
     }
 
     private void addFilm() {
@@ -259,6 +238,9 @@ public class FilmManagementSystem {
             System.out.println("Cant find the film#" + id );
             return;
         } else {
+            System.out.println("---------------------------------");
+            System.out.println("Deleting the film: ");
+            System.out.println(tempFilm);
             //remove the film from the actors
             LinkedList<Actor> actors = tempFilm.getActorList();
             for (Actor actor : actors) {
@@ -271,6 +253,8 @@ public class FilmManagementSystem {
 
             filmRevenueHeap.removeFilm(tempFilm);
             filmRatingHeap.removeFilm(tempFilm);
+
+            System.out.println("Film deleted");
         }
     }
 
@@ -306,14 +290,14 @@ public class FilmManagementSystem {
                     allFilmsList.add(updatedFilm);
                     filmBST.insert(updatedFilm.getFilmName());
 
-                    filmRevenueHeap.updateFilmRating(updatedFilm);
+                    filmRevenueHeap.updateFilmRating(tempFilm,updatedFilm);
                     filmRatingHeap.updateFilmRating(tempFilm, updatedFilm);
                     
                     return;
                 }            
             }
             
-            clearScreen();
+            Utils.clearScreen();
         }
         
     }
@@ -340,6 +324,11 @@ public class FilmManagementSystem {
             } else {
                 tempFilm.addRating(rating);
                 filmRatingHeap.updateFilmRating(tempFilm);
+                System.out.println("Rating added successfully");
+                System.out.println("\nHere is the updated rating for the film: ");
+                System.out.println(tempFilm);
+                System.out.println("All Ratings: " + tempFilm.getRatings());
+                System.out.println("Average Rating: " + tempFilm.getAverageRating());
             }
         }
     }
@@ -417,7 +406,7 @@ public class FilmManagementSystem {
 			System.out.println("No actors in the system");
 			return;
 		}
-        clearScreen();
+        Utils.clearScreen();
         System.out.println("ALL ACTORS: " + allActorsList);
         System.out.println("Enter the id of the actor you want to delete");
         int id = InputHelper.getIntegerInput("Actor id: ");
@@ -428,6 +417,9 @@ public class FilmManagementSystem {
             System.out.println("Cant find the actor#" + id );
             return;
         } else {
+            System.out.println("---------------------------------");
+            System.out.println("Deleting the actor: ");
+            System.out.println(tempActor);
             // remove the actor from the films
             LinkedList<Film> films = tempActor.getFilmsParticipated();
             for (Film film : films) {
@@ -437,6 +429,8 @@ public class FilmManagementSystem {
             allActorsList.remove(tempActor);
             actorBST.delete(tempActor.getActorName());
             actorIDMap.remove(id);
+
+            System.out.println("Actor deleted");
         }
     }
 
@@ -478,17 +472,4 @@ public class FilmManagementSystem {
         revenueStack.printStacktoN(number);
     }
 
-    public static void clearScreen() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                // Windows-specific command
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                // Unix/Linux/Mac command
-                new ProcessBuilder("clear").inheritIO().start().waitFor();
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

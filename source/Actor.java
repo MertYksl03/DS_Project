@@ -1,3 +1,5 @@
+package source;
+
 import data_structures.HashMap;
 import data_structures.LinkedList;
 

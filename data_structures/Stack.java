@@ -59,14 +59,15 @@ public class Stack<T> {
 
     // Print the stack from the top to the nth element
     public void printStacktoN(int n) {
-        if (n > size) {
-            System.out.println("The stack does not have " + n + " elements");
-            return;
-        }
         if (isEmpty()) {
             System.out.println("The stack is empty");
             return;
         }
+        if (n > size) {
+            System.out.println("The stack has " + size + " elements");
+            n = size;
+        }
+        
         Node<T> current = top;
         for (int i = 0; i < n; i++) {
             System.out.println(current.data);

@@ -1,3 +1,5 @@
+package source;
+
 import data_structures.MaxHeap; 
 
 public class FilmRevenueHeap {
@@ -36,12 +38,18 @@ public class FilmRevenueHeap {
         revenueHeap.delete(film.getFilmName());
     }
 
+    public void updateFilmRating(Film oldFilm, Film newFilm) {
+        revenueHeap.delete(oldFilm.getFilmName());
+        revenueHeap.insert(newFilm.getFilmName(), newFilm.getTotalRevenue(), newFilm.getReleaseYear());
+    }
+
+    // Used when film revenue is updated
     public void updateFilmRating(Film film) {
         revenueHeap.delete(film.getFilmName());
         revenueHeap.insert(film.getFilmName(), film.getTotalRevenue(), film.getReleaseYear());
     }
 
-    public void printTopFilms(int n) {
+    public void printTopFilm(int n) {
         for (int i = 0; i < n; i++) {
             System.out.println(revenueHeap.getMax());
         }

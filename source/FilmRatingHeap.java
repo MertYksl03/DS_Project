@@ -1,3 +1,4 @@
+package source;
 import data_structures.MaxHeap; 
 
 public class FilmRatingHeap {
@@ -41,12 +42,13 @@ public class FilmRatingHeap {
         ratingHeap.insert(updatedFilm.getFilmName(), updatedFilm.getAverageRating(), updatedFilm.getReleaseYear());
     }
 
+    // used when film rated by users
     public void updateFilmRating(Film film) {
         ratingHeap.delete(film.getFilmName());
         ratingHeap.insert(film.getFilmName(), film.getAverageRating(), film.getReleaseYear());
     }
 
-    public void printTopFilms(int n) {
+    public void printTopFilm(int n) {
         for (int i = 0; i < n; i++) {
             System.out.println(ratingHeap.getMax());
         }

@@ -1,3 +1,4 @@
+package source;
 import data_structures.LinkedList;
 import data_structures.HashMap;
 
@@ -61,6 +62,10 @@ public class Film {
     public void addRating(int rating) {
         ratings.add(rating);
         averageRating = getAverage(ratings);
+    }
+
+    public LinkedList<Integer> getRatings() {
+        return ratings;
     }
 
     private double getAverage(LinkedList<Integer> ratings) {
