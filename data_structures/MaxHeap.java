@@ -39,17 +39,17 @@ public class MaxHeap {
     }
 
     // Returns the index of the parent node
-    public int parent(int i) {
+    private int parent(int i) {
         return (i - 1) / 2;
     }
 
     // Returns the index of the left child 
-    public int leftChild(int i) {
+    private int leftChild(int i) {
         return 2 * i + 1;
     }
 
     // Returns the index of the right child 
-    public int rightChild(int i) {
+    private int rightChild(int i) {
         return 2 * i + 2;
     }
 
@@ -113,7 +113,7 @@ public class MaxHeap {
     }
 
     // Moves the item at position i into its appropriate position
-    public void maxHeapify(int i) {
+    private void maxHeapify(int i) {
         int left = this.leftChild(i);
         int right = this.rightChild(i);
         int largest = i;
