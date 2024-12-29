@@ -126,7 +126,7 @@ public class FilmManagementSystem {
         int numScreenings = (int)(Math.random() * 100000);
         int totalRevenue = (int)(ticketPrice * numScreenings);
 
-        System.out.println(film.getFilmName() + " has " + numScreenings + " screenings");
+        System.out.println("Number of screenings: " + numScreenings);
         Utils.sleep(0.05);
         System.out.println("Ticket price: " + ticketPrice);
         Utils.sleep(0.05);
@@ -349,7 +349,7 @@ public class FilmManagementSystem {
         } else {
             System.out.println(tempFilm);
             double ticketPrice = InputHelper.getDoubleInput("Enter the ticket price: ");
-            double numScreenings = InputHelper.getDoubleInput("Enter the number of screeningSchedule: ");
+            double numScreenings = InputHelper.getDoubleInput("Enter the number of screenings: ");
 
             double revenue = (int)(ticketPrice * numScreenings);
             
