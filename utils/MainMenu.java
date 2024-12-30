@@ -1,7 +1,7 @@
 package utils;
 public class MainMenu {
     public static void print() {
-        // Instead of calling System.out.println() multiple times, you can use a single call with a concatenated string
+        // Instead of calling System.out.println() multiple times, we are using a concatenated string
         String menu = 
         "*************************************\n" +
         "--------------MAIN MENU--------------\n" +

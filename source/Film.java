@@ -1,4 +1,5 @@
 package source;
+
 import data_structures.LinkedList;
 import data_structures.HashMap;
 
@@ -76,7 +77,7 @@ public class Film {
         return sum / (double)(ratings.length());
     }
 
-    //ask user for film details create new film
+    // ask user for film details create new film
     public static Film addFilm() {
         String filmName = InputHelper.getStringInput("Enter film name: ");
         String genre = InputHelper.getStringInput("Enter genre: ");
@@ -91,6 +92,7 @@ public class Film {
         return film;
     }
 
+    // used to update a film
     public static Film addFilm(int id) {
         String filmName = InputHelper.getStringInput("Enter film name: ");
         String genre = InputHelper.getStringInput("Enter genre: ");

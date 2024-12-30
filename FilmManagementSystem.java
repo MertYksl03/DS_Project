@@ -101,7 +101,7 @@ public class FilmManagementSystem {
                     System.out.println("Invalid choice");
                     break;
                 }
-            Utils.sleep(0.5); // this one second Utils.sleep creates a fake program doing something effect
+            Utils.sleep(0.5); // this Utils.sleep creates a fake program doing something effect
         }
 
         // To dont forget to close the scanner object, we have to call the close method
