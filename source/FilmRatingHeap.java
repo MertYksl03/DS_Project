@@ -48,11 +48,6 @@ public class FilmRatingHeap {
         ratingHeap.insert(film.getFilmName(), film.getAverageRating(), film.getReleaseYear());
     }
 
-    public void printTopFilm(int n) {
-        for (int i = 0; i < n; i++) {
-            System.out.println(ratingHeap.getMax());
-        }
-    }
 
     @Override
     public String toString() {

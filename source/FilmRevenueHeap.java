@@ -49,11 +49,6 @@ public class FilmRevenueHeap {
         revenueHeap.insert(film.getFilmName(), film.getTotalRevenue(), film.getReleaseYear());
     }
 
-    public void printTopFilm(int n) {
-        for (int i = 0; i < n; i++) {
-            System.out.println(revenueHeap.getMax());
-        }
-    }
 
     @Override
     public String toString() {
