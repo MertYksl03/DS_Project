@@ -139,9 +139,12 @@ public class FilmManagementSystem {
 
     private void Initialize() {
         Utils.clearScreen();
-        System.out.println("*************************************");
-        System.out.println("Welcome to the Film Management System");
-        System.out.println("*************************************");
+        String welcomeMessage = 
+            "*************************************\n" +
+            "Welcome to the Film Management System\n"+
+            "*************************************\n";
+
+        System.out.println(welcomeMessage);
 
         //fake loading screen
         System.out.println("Loading all the films and actors...");
